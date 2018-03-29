@@ -2,28 +2,29 @@
 
 require "../connect.php";
 
-
+$bdd = new PDO(DSN, USER, PASS);
+$bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 //préparation de la requete de selection
 $querySelect = "SELECT * FROM contact WHERE nom =:nom ;";
 $prep = $bdd->prepare($querySelect);
 //préparation de la requete d'insertion
 $queryInsert = "INSERT INTO contact (nom, prenom)    VALUES (:nom, :prenom);";
+$queryInsert2 = "INSERT INTO civilite (civilite)    VALUES (:civilite);";
 $prep2 = $bdd->prepare($queryInsert);
+$prep3 = $bdd->prepare($queryInsert2);
 
 
 if ($_SERVER["REQUEST_METHOD"]==='POST') {
-      //analyse des données reçues en post
-      //si une donnée est reçue, on la lie à la préparation de l'Insertion
-      //sinon on rentre des données dans le tableau d'erreur
+
       if(!isset($_POST['id_civility']) || empty($_POST['id_civility']))
       {
-        $error['prenom'] = "Vous n'avez pas entré de genre.";
+        $error['civilite'] = "Vous n'avez pas entré de genre.";
       }else {
-        $prep2->bindValue(':nom',$_POST['nom'], PDO::PARAM_STR);
+        $prep3->bindValue(':civilite',$_POST['civilite'], PDO::PARAM_STR);
       }
       if(!isset($_POST['nom']) || empty($_POST['nom']))
       {
-        $error['prenom'] = "Vous n'avez pas entré le titre.";
+        $error['nom'] = "Vous n'avez pas entré le titre.";
       }else {
         $prep2->bindValue(':nom',$_POST['nom'], PDO::PARAM_STR);
       }
@@ -35,15 +36,14 @@ if ($_SERVER["REQUEST_METHOD"]==='POST') {
         $prep2->bindValue(':prenom',$_POST['prenom'], PDO::PARAM_STR);
       }
 
-      //si il n'y a pas d'erreur, on execute la requete d'insertion préparée
+
       if(empty($error))
       {
         $prep2->execute();
       }
     }
-    //on lie la donnée "Luc" à la requete préparée
+
     $prep->bindValue(':nom', ':prenom', PDO::PARAM_STR);
-    //on execute la requete de selection préparée
     $prep->execute();
 
 
@@ -61,14 +61,14 @@ if ($_SERVER["REQUEST_METHOD"]==='POST') {
   <body>
     <div class="container">
 
-      <h1>Créer un nouveau Contact :</h1>
+      <h2>Créer un nouveau Contact :</h2>
 
-      <form action="form.php" method="post">
-        <label for="objet">Genre :</label>
-      <select id="objet" name="genre"><br>
-        <option value="homme">M.</option>
-        <option value="femme">Mme.</option>
-      </select><br><br>
+      <form action="index.php" method="post">
+            <label for="objet">Genre :</label>
+          <select id="objet" name="genre"><br>
+            <option value="homme">M.</option>
+            <option value="femme">Mme.</option>
+          </select><br><br>
 
           <label for="nom">Nom</label><br>
           <input type="text" name="nom" placeholder="Votre nom" value=""><br>

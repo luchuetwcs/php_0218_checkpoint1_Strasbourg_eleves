@@ -19,9 +19,10 @@ $contenuContact = $bdd->query("SELECT * FROM contact ORDER BY nom ASC");
   </head>
 
   <body>
+    <h1 style="color: darkblue; text-align: center; font-size: 3em;">CHECKPOINT 1</h1>
     <div class="container">
 
-    <h1>Contenu de la Base de Données :</h1>
+    <h2>Contenu de la Base de Données :</h2>
     <br><br>
 
     <table class="table table-bordered">
@@ -35,14 +36,13 @@ $contenuContact = $bdd->query("SELECT * FROM contact ORDER BY nom ASC");
 
       <tbody>
           <?php
-          //on récupérer les données de l'exécution de la requete de selection
+
           $donnees = $contenuCivility->fetchAll();
           $donneesContact = $contenuContact->fetchAll();
-          //on parcours le résultat pour les mettre dans la table
 
           foreach ($donneesContact as $data)
           {
-            echo "<tr><td>".$data['civility_id']."</td><td>".$data['nom']." ".$data['prenom']."</tr>";
+            echo "<tr><td>".$data['civility_id']."</td><td>".$data['nom']." ".$data['prenom']."</td></tr>";
           }
 
           ?>
