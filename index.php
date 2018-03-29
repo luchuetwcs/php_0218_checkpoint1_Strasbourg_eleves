@@ -95,7 +95,7 @@ function fullname($lastname, $firstname){
         </table>
 
         <h1>Ajouter un contact :</h1>
-        <form action="beug.php" method="post">
+        <form action="index.php" method="post">
             <div>
                 <label for="lastname">Lastname :</label>
                 <input type="text" id="lastname" name="lastname" value="" placeholder="Lastname" />
