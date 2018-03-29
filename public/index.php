@@ -29,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"]==='POST') {
         }
       }
 
+      // A REVOIR !!!!!!
       if(!isset($_POST['firstname']) || empty($_POST['firstname']))
       {
         $error['firstname'] = "Enter firstname.";
