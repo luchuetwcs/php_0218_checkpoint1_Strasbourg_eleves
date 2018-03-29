@@ -21,14 +21,14 @@
                   $prep2->bindValue(':civility',$_POST['civility'], PDO::PARAM_INT);
                 }
 
-                if(!isset($_POST['lastname']) || empty($_POST['lastname']))
+                if(!isset($_POST['lastname']) || empty($_POST['lastname']) || !preg_match("/^[a-zA-Z'. -]+$/", $_POST['lastname']))
                 {
                   $error['lastname'] = "Vous n'avez pas entré votre nom.";
                 }else {
                   $prep2->bindValue(':lastname',$_POST['lastname'], PDO::PARAM_STR);
                 }
 
-                if(!isset($_POST['firstname']) || empty($_POST['firstname']))
+                if(!isset($_POST['firstname']) || empty($_POST['firstname']) || !preg_match("/^[a-zA-Z'. -]+$/", $_POST['lastname']))
                 {
                   $error['firstname'] = "Vous n'avez pas entré votre prénom.";
                 }else {
