@@ -1,16 +1,19 @@
 <?php
 
 require '../connection/connect.php';
+require '../src/functions.php';
 $pdo = new PDO(DSN, USER, PASS);
 
    
 
     //préparation de la requete d'insertion
-$queryInsert = 'INSERT INTO contact (lastname, firstname, civility_id)    VALUES (:lastname, :firstname, :civility);';
+$queryInsert = 'INSERT INTO contact(lastname, firstname, civility_id )  VALUES (:lastname, :firstname, :civility);';
 $prep2 = $pdo->prepare($queryInsert);
 
 
     // Test formulaire
+
+    $false = '';
 if ($_SERVER["REQUEST_METHOD"]==='POST') {
       //analyse des données reçues en post
       //si une donnée est reçue, on la lie à la préparation de l'Insertion
@@ -45,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"]==='POST') {
       {
         $prep2->execute();
       }else{
-          echo "Tout les champs ne sont pas rempli !!";
+          $false= "Tout les champs ne sont pas rempli !!";
       }
     }
 
@@ -76,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"]==='POST') {
             <input type="text" name="firstname" placeholder="Firstname" value=""><br>
             <label for="lastname"> lastname</label><br> 
             <input type="text" name="lastname" placeholder="Lastname" value=""><br>
-            <br>
+            <br><h1><?php echo $false; ?></h1>
             <button type="submit">Envoyer</button><br>
         </form>
     </div>
@@ -95,18 +98,17 @@ if ($_SERVER["REQUEST_METHOD"]==='POST') {
           <?php
 
            //préparation de la requete de selection
-            $querySelect = 'SELECT CONCAT(lastname, " ", firstname) as fullname, civility FROM contact JOIN civility civ ON civ.id = contact.civility_id';
+            $querySelect = 'SELECT lastname, firstname, civility.civility FROM contact JOIN civility ON contact.civility_id = civility.id';
             $prep = $pdo->query($querySelect);
           //on récupérer les données de l'exécution de la requete de selection
             $donnees = $prep->fetchAll();
-
 
           //on parcours le résultat pour les mettre dans la table
             foreach($donnees as $data)
           {
              
               echo "<tr><td>".$data['civility']."</td>";
-              echo "<td>".$data['fullname']."</td></tr>";
+              echo "<td>".fullname($data['lastname'],$data['firstname'])."</td></tr>";
           }
           ?>
         </tbody>
